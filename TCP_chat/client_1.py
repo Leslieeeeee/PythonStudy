@@ -41,5 +41,5 @@ def porcessLinkButton(self):
     t.start()
 
 #为什么这里不用
-# if __init__ =="__main__":
+# if __name__ =="__main__":
 Chat()
