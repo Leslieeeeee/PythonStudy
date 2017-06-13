@@ -1,11 +1,10 @@
-#!/usr/bin/python
+# CrawUnivRankingA.py
 import requests
 from bs4 import BeautifulSoup
-import re
 import bs4
 
 
-def GetHTML(url):
+def getHTMLText(url):
     try:
         r = requests.get(url, timeout=30)
         r.raise_for_status()
@@ -15,28 +14,28 @@ def GetHTML(url):
         return ""
 
 
-def GetElem(ulist, html):
+def fillUnivList(ulist, html):
     soup = BeautifulSoup(html, "html.parser")
-    for tr in soup.find('table').children:
+    for tr in soup.find('tbody').children:
         if isinstance(tr, bs4.element.Tag):
             tds = tr('td')
             ulist.append([tds[0].string, tds[1].string, tds[3].string])
-        return ulist
 
 
-def PrintElem(ulist, num):
-    print("{:^\w\w\w\w}\t{:^\d\d}\t".format("股票名称", "热度"))
+def printUnivList(ulist, num):
+    print("{:^10}\t{:^6}\t{:^10}".format("排名", "学校名称", "总分"))
     for i in range(num):
         u = ulist[i]
-        print("{:^\w\w\w\w}\t{:^\d\d\d\d}\t".format(u[0], u[1]))
+        print("{:^10}\t{:^6}\t{:^10}".format(u[0], u[1], u[2]))
 
 
 def main():
-    ulist = []
-    url = "https://xueqiu.com/"
-    html = GetHTML(url)
-    GetElem(ulist, html)
-    PrintElem(ulist, 20)
+    uinfo = []
+    url = 'http://www.zuihaodaxue.cn/zuihaodaxuepaiming2016.html'
+    html = getHTMLText(url)
+    fillUnivList(uinfo, html)
+    printUnivList(uinfo, 20)  # 20 univs
 
 
 main()
+
